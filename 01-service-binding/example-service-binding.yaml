@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-deployment
+spec:
+  selector:
+    matchLabels:
+      type: example
+      color: red
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 10%
+  template:
+    metadata:
+      labels:
+        type: example
+        color: red
+    spec:
+      containers:
+      - name: echocolor
+        image: reselbob/echocolor:v0.1
+        resources: {}
+        ports:
+        - containerPort: 3000
+        env:
+        - name: COLOR_ECHO_COLOR
+          value: RED
+        - name: COLOR_ECHO_VERSION
+          value: V1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  selector:
+    type: example
+    color: red
+  ports:
+  -
+    protocol: TCP
+    port: 3000
+    targetPort: 3000
+  type: NodePort

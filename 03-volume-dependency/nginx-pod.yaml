@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: nginx
+  name: nginx
+spec:
+  volumes: 
+  - name: foo 
+    secret:
+      secretName: mygmfsecret2
+  containers:
+  - image: nginx
+    imagePullPolicy: IfNotPresent
+    name: nginx
+    resources: {}
+    volumeMounts: # our volume mounts
+    - name: foo # name on pod.spec.volumes
+      mountPath: /etc/foo #our mount path
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}

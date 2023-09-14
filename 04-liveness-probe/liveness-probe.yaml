@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: nginx
+  name: nginx
+spec:
+  containers:
+  - image: nginx
+    imagePullPolicy: IfNotPresent
+    name: nginx
+    resources: {}
+    livenessProbe:
+      exec:
+        command:
+        - ls
+      initialDelaySeconds: 8
+      periodSeconds: 10
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}

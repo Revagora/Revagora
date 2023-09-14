@@ -1,0 +1,32 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: auth-tls
+  namespace: example-system
+spec:
+  secretName: auth-tls
+  duration: 9552h # 398d
+  renewBefore: 360h # 15d
+  subject:
+    organizations:
+      - example
+  commonName: auth-service
+  isCA: false
+  privateKey:
+    algorithm: RSA
+    encoding: PKCS1
+    size: 2048
+  usages:
+    - server auth
+    - client auth
+  dnsNames:
+    - auth
+    - auth-service
+    - auth-service.example-system
+    - example.com
+    - auth.default.svc.cluster.local
+    - example-system-auth-service-443
+  issuerRef:
+    name: example-intermicrosvccom-ca-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io

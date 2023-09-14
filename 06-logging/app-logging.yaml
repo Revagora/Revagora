@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: logging-example
+spec:
+  containers:
+  - name: busybox-simple-container
+    image: busybox
+    # image: busybox@sha256:1fa89c01cd0473cedbd1a470abb8c139eeb80920edf1bc55de87851bfb63ea11 ## Workaround for working on an m1 mac
+    args:
+    - /bin/sh
+    - -c
+    - >
+      i=0;
+      while true;
+      do
+        echo "$i: $(date)" >> /var/log/server.log;
+        i=$((i+1));
+        sleep 5;
+      done
+    volumeMounts:
+    - name: logdir
+      mountPath: /var/log
+    resources: {}
+        
+  volumes:
+  - name: logdir
+    emptyDir: {}
